@@ -1,5 +1,4 @@
 import re
-import re
 
 log = """
 2023-11-15 00:34:14,314: Key 'a' pressed
@@ -10,20 +9,11 @@ log = """
 2023-11-15 00:34:14,690: Key 'h' pressed
 """
 
-def convert_to_readable_statement(log):
-    lines = log.split('\n')
-    keys = [re.findall(r"Key\s'(.+?)'\spressed", line) for line in lines]
-    readable_statement = " ".join([key[0] for key in keys if key])
-    return readable_statement
-
-readable_log = convert_to_readable_statement(log)
-print(readable_log)
-
 
 def convert_to_readable(log):
     key_mapping = {
         'enter': '\n',
-        'space': ' ',
+        'space': '\t',
         'esc': '',
         'shift_r': '',
         'caps_lock': '',
