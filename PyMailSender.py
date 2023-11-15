@@ -11,6 +11,15 @@ import time
 
 load_dotenv();
 
+def set_email_of_receiver(receiver=None):
+    return receiver;
+
+class Receiver:
+    @staticmethod
+    def receiver_email(self, receiever):
+        return receiever;
+
+
 class SenderInfo(Enum):
     SENDER_EMAIL = os.getenv("SENDER_EMAIL");
     SENDER_PASSWORD_GENERATED = os.getenv("EMAIL_PASSWORD_GENERATED");

